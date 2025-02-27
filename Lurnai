@@ -1,0 +1,60 @@
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/lIlIlIlIlIlIlIlIlIllIlIlIlIlIlIlIlIlIl/Tester/refs/heads/main/source.lua"))()
+
+local Window = Library:CreateWindow({
+    Title = "Lurnai",
+    SubTitle = "v1.0.0",
+    TabWidth = 160,
+    Size = UDim2.fromOffset(580, 460),
+    MinSize = UDim2.fromOffset(580, 460)
+})
+
+local MainTab = Window:CreateTab("Main")
+
+MainTab:CreateButton("Click Me", {
+    Callback = function()
+        print("Button clicked!")
+    end
+})
+
+MainTab:CreateToggle("Toggle", {
+    Default = false,
+    Flag = "myToggle",
+    Callback = function(Value)
+        print("Toggle is now:", Value)
+    end
+})
+
+MainTab:CreateSlider("Slider", {
+    Min = 0,
+    Max = 100,
+    Default = 50,
+    Flag = "mySlider",
+    Callback = function(Value)
+        print("Slider value:", Value)
+    end
+})
+
+MainTab:CreateDropdown("Dropdown", {
+    List = {"Option 1", "Option 2", "Option 3"},
+    Default = "Option 1",
+    Flag = "myDropdown",
+    Callback = function(Value)
+        print("Selected:", Value)
+    end
+})
+
+MainTab:CreateColorPicker("Color", {
+    Default = Color3.fromRGB(255, 0, 0),
+    Flag = "myColor",
+    Callback = function(Value)
+        print("Color picked:", Value)
+    end
+})
+
+MainTab:CreateKeybind("Keybind", {
+    Default = Enum.KeyCode.E,
+    Flag = "myKeybind",
+    Callback = function(Value)
+        print("New keybind:", Value)
+    end
+})
