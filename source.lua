@@ -427,6 +427,20 @@ ColorPicker.Preview.InputBegan:Connect(function(input)
 end)
 
 UpdateColor()
+
+-- Add TabHolder
+Window.TabHolder = Instance.new("Frame")
+Window.TabHolder.Size = UDim2.new(0, 150, 1, -30)
+Window.TabHolder.Position = UDim2.fromOffset(0, 30)
+Window.TabHolder.BackgroundColor3 = Lurnai.Theme.Background
+Window.TabHolder.Parent = Window.Frame
+
+-- Add Container
+Window.Container = Instance.new("Frame")
+Window.Container.Size = UDim2.new(1, -150, 1, -30)
+Window.Container.Position = UDim2.fromOffset(150, 30)
+Window.Container.BackgroundColor3 = Lurnai.Theme.Background
+Window.Container.Parent = Window.Frame
             
             return ColorPicker
         end
