@@ -1,40 +1,42 @@
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/lIlIlIlIlIlIlIlIlIllIlIlIlIlIlIlIlIlIl/Tester/refs/heads/main/source.lua"))()
 
+-- Create the window with proper sizing for mobile
 local Window = Library:CreateWindow({
-    Title = "Lurnai",
-    SubTitle = "v1.0.0",
-    TabWidth = 160,
-    Size = UDim2.fromOffset(580, 460),
-    MinSize = UDim2.fromOffset(580, 460)
+    Title = "Example UI",
+    Size = UDim2.fromOffset(300, 350), -- Mobile-friendly size
+    MinSize = UDim2.fromOffset(300, 350)
 })
 
+-- Create tabs
 local MainTab = Window:CreateTab("Main")
+local SettingsTab = Window:CreateTab("Settings")
 
+-- Add elements to MainTab
 MainTab:CreateButton("Click Me", {
     Callback = function()
-        print("Button clicked!")
+        print("Button Clicked!")
     end
 })
 
-MainTab:CreateToggle("Toggle", {
+MainTab:CreateToggle("Toggle Option", {
     Default = false,
     Flag = "myToggle",
     Callback = function(Value)
-        print("Toggle is now:", Value)
+        print("Toggle:", Value)
     end
 })
 
-MainTab:CreateSlider("Slider", {
+MainTab:CreateSlider("Speed", {
     Min = 0,
     Max = 100,
     Default = 50,
-    Flag = "mySlider",
+    Flag = "speedSlider",
     Callback = function(Value)
-        print("Slider value:", Value)
+        print("Speed:", Value)
     end
 })
 
-MainTab:CreateDropdown("Dropdown", {
+MainTab:CreateDropdown("Select Option", {
     List = {"Option 1", "Option 2", "Option 3"},
     Default = "Option 1",
     Flag = "myDropdown",
@@ -43,17 +45,17 @@ MainTab:CreateDropdown("Dropdown", {
     end
 })
 
-MainTab:CreateColorPicker("Color", {
+MainTab:CreateColorPicker("UI Color", {
     Default = Color3.fromRGB(255, 0, 0),
-    Flag = "myColor",
+    Flag = "uiColor",
     Callback = function(Value)
-        print("Color picked:", Value)
+        print("Color:", Value)
     end
 })
 
-MainTab:CreateKeybind("Keybind", {
-    Default = Enum.KeyCode.E,
-    Flag = "myKeybind",
+MainTab:CreateKeybind("Toggle UI", {
+    Default = Enum.KeyCode.RightControl,
+    Flag = "toggleUI",
     Callback = function(Value)
         print("New keybind:", Value)
     end
