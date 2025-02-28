@@ -4,9 +4,8 @@ local Services = {
     TweenService = game:GetService("TweenService"),
     HttpService = game:GetService("HttpService"),
     RunService = game:GetService("RunService"),
-    VirtualUser = game:GetService("VirtualUser"),
-    CoreGui = game:GetService("CoreGui") or gethui(),
-    Players = game:GetService("Players")
+    Players = game:GetService("Players"),
+    CoreGui = game:GetService("CoreGui") or gethui()
 }
 
 local Lurnai = {
@@ -46,10 +45,10 @@ local Lurnai = {
     Elements = {},
     Windows = {},
     Flags = {},
-    Icons = {},
     Version = "1.0.0"
 }
--- Core Utility Functions
+
+- Utility Functions
 local Utility = {
     Cache = {},
     Connections = {}
@@ -161,295 +160,179 @@ function Lurnai:CreateWindow(title, subtitle)
         BackgroundColor3 = self.Themes[self.Settings.DefaultTheme].Background,
         Parent = window
     })
-    
-local Components = {}
 
-function Components.CreateTopbar(main, title, subtitle)
-    local topbar = Utility.Create("Frame", {
-        Name = "Topbar",
-        Size = UDim2.new(1, 0, 0, 30),
-        BackgroundColor3 = Lurnai.Themes[Lurnai.Settings.DefaultTheme].Secondary,
+    -- Add corner radius
+    Utility.Create("UICorner", {
+        CornerRadius = UDim.new(0, 6),
         Parent = main
     })
-    
+
+    -- Create container for content
+    local container = Utility.Create("Frame", {
+        Name = "Container",
+        Size = UDim2.new(1, -20, 1, -60),
+        Position = UDim2.new(0, 10, 0, 50),
+        BackgroundTransparency = 1,
+        Parent = main
+    })
+
+    -- Make window draggable
+    Utility.Draggable(main)
+
+    -- Components container
+    local components = {
+        Container = container,
+        Window = window,
+        Main = main
+    }
+
+    -- Create topbar
+    local topbar = Utility.Create("Frame", {
+        Name = "Topbar",
+        Size = UDim2.new(1, 0, 0, 40),
+        BackgroundColor3 = self.Themes[self.Settings.DefaultTheme].Secondary,
+        Parent = main
+    })
+
+    Utility.Create("UICorner", {
+        CornerRadius = UDim.new(0, 6),
+        Parent = topbar
+    })
+
     local titleLabel = Utility.Create("TextLabel", {
-        Name = "Title",
         Text = title or "Lurnai",
         Size = UDim2.new(0.5, 0, 1, 0),
         Position = UDim2.fromOffset(10, 0),
         TextXAlignment = Enum.TextXAlignment.Left,
-        TextColor3 = Lurnai.Themes[Lurnai.Settings.DefaultTheme].Text,
+        TextColor3 = self.Themes[self.Settings.DefaultTheme].Text,
         BackgroundTransparency = 1,
         Font = Enum.Font.GothamBold,
         TextSize = 14,
         Parent = topbar
     })
-    
+
     local subtitleLabel = Utility.Create("TextLabel", {
-        Name = "Subtitle",
         Text = subtitle or "",
         Size = UDim2.new(0.5, 0, 0.5, 0),
         Position = UDim2.new(0, 10, 0.5, 2),
         TextXAlignment = Enum.TextXAlignment.Left,
-        TextColor3 = Lurnai.Themes[Lurnai.Settings.DefaultTheme].SubText,
+        TextColor3 = self.Themes[self.Settings.DefaultTheme].SubText,
         BackgroundTransparency = 1,
         Font = Enum.Font.Gotham,
         TextSize = 12,
         Parent = topbar
     })
-    
-    local controls = Utility.Create("Frame", {
-        Name = "Controls",
-        Size = UDim2.new(0, 70, 1, 0),
-        Position = UDim2.fromScale(1, 0),
-        AnchorPoint = Vector2.new(1, 0),
-        BackgroundTransparency = 1,
-        Parent = topbar
-    })
-    
-    -- Adding minimize and close buttons
-    local closeButton = Components.CreateButton(controls, {
-        Size = UDim2.new(0, 30, 0, 30),
-        Position = UDim2.fromScale(1, 0),
-        AnchorPoint = Vector2.new(1, 0),
-        Text = "×",
-        TextSize = 20,
-        Callback = function()
-            Utility.Tween(main, {
-                Size = UDim2.fromOffset(0, 0),
-                Position = UDim2.fromScale(0.5, 0.5)
-            }, 0.3).Completed:Wait()
-            window:Destroy()
-        end
-    })
-    
-    return topbar
+
+    return components
 end
 
-function Components.CreateTab(name, icon)
-    local tab = Utility.Create("Frame", {
-        Name = name,
-        Size = UDim2.new(1, 0, 0, 40),
-        BackgroundColor3 = Lurnai.Themes[Lurnai.Settings.DefaultTheme].Secondary,
-        BackgroundTransparency = 0.8
-    })
-    
-    local iconImage = Utility.Create("ImageLabel", {
-        Size = UDim2.fromOffset(20, 20),
-        Position = UDim2.new(0, 10, 0.5, 0),
-        AnchorPoint = Vector2.new(0, 0.5),
-        Image = icon,
-        BackgroundTransparency = 1,
-        Parent = tab
-    })
-    
-    local label = Utility.Create("TextLabel", {
-        Text = name,
-        Size = UDim2.new(1, -50, 1, 0),
-        Position = UDim2.new(0, 40, 0, 0),
-        TextXAlignment = Enum.TextXAlignment.Left,
-        TextColor3 = Lurnai.Themes[Lurnai.Settings.DefaultTheme].Text,
-        BackgroundTransparency = 1,
-        Font = Enum.Font.GothamMedium,
-        TextSize = 14,
-        Parent = tab
-    })
-    
 -- Interactive Components
-function Components.CreateButton(parent, options)
+function Lurnai:CreateButton(parent, options)
     local button = Utility.Create("TextButton", {
         Name = options.Name or "Button",
         Size = options.Size or UDim2.new(1, -20, 0, 32),
         Position = options.Position or UDim2.fromOffset(10, 0),
-        BackgroundColor3 = Lurnai.Themes[Lurnai.Settings.DefaultTheme].Accent,
+        BackgroundColor3 = self.Themes[self.Settings.DefaultTheme].Accent,
         Text = options.Text or "Button",
-        TextColor3 = Lurnai.Themes[Lurnai.Settings.DefaultTheme].Text,
+        TextColor3 = self.Themes[self.Settings.DefaultTheme].Text,
         Font = Enum.Font.GothamMedium,
         TextSize = options.TextSize or 14,
-        Parent = parent
+        Parent = parent.Container
     })
-    
+
     Utility.Create("UICorner", {
         CornerRadius = UDim.new(0, 4),
         Parent = button
     })
-    
+
     button.MouseButton1Click:Connect(function()
         Utility.Ripple(button)
         if options.Callback then
             options.Callback()
         end
     end)
-    
+
     return button
 end
 
-function Components.CreateToggle(parent, options)
+function Lurnai:CreateToggle(parent, options)
     local toggle = Utility.Create("Frame", {
         Name = options.Name or "Toggle",
         Size = UDim2.new(1, -20, 0, 32),
-        Position = options.Position or UDim2.fromOffset(10, 0),
         BackgroundTransparency = 1,
-        Parent = parent
+        Parent = parent.Container
     })
-    
-    local label = Utility.Create("TextLabel", {
+
+    local background = Utility.Create("Frame", {
+        Size = UDim2.new(1, 0, 1, 0),
+        BackgroundColor3 = self.Themes[self.Settings.DefaultTheme].Secondary,
+        Parent = toggle
+    })
+
+    Utility.Create("UICorner", {
+        CornerRadius = UDim.new(0, 4),
+        Parent = background
+    })
+
+    local title = Utility.Create("TextLabel", {
         Text = options.Text or "Toggle",
-        Size = UDim2.new(1, -50, 1, 0),
+        Size = UDim2.new(1, -60, 1, 0),
+        Position = UDim2.fromOffset(10, 0),
         TextXAlignment = Enum.TextXAlignment.Left,
-        TextColor3 = Lurnai.Themes[Lurnai.Settings.DefaultTheme].Text,
+        TextColor3 = self.Themes[self.Settings.DefaultTheme].Text,
         BackgroundTransparency = 1,
         Font = Enum.Font.GothamMedium,
         TextSize = 14,
         Parent = toggle
     })
-    
+
     local switch = Utility.Create("Frame", {
         Size = UDim2.fromOffset(40, 20),
-        Position = UDim2.new(1, -40, 0.5, 0),
-        AnchorPoint = Vector2.new(1, 0.5),
-        BackgroundColor3 = Lurnai.Themes[Lurnai.Settings.DefaultTheme].Secondary,
+        Position = UDim2.new(1, -50, 0.5, 0),
+        AnchorPoint = Vector2.new(0, 0.5),
+        BackgroundColor3 = self.Themes[self.Settings.DefaultTheme].Accent,
         Parent = toggle
     })
-    
+
+    Utility.Create("UICorner", {
+        CornerRadius = UDim.new(1, 0),
+        Parent = switch
+    })
+
     local indicator = Utility.Create("Frame", {
         Size = UDim2.fromOffset(16, 16),
         Position = UDim2.new(0, 2, 0.5, 0),
         AnchorPoint = Vector2.new(0, 0.5),
-        BackgroundColor3 = Lurnai.Themes[Lurnai.Settings.DefaultTheme].Text,
+        BackgroundColor3 = self.Themes[self.Settings.DefaultTheme].Text,
         Parent = switch
     })
-    
-    Utility.Create("UICorner", {
-        CornerRadius = UDim.new(1, 0),
-        Parent = switch
-    })
-    
+
     Utility.Create("UICorner", {
         CornerRadius = UDim.new(1, 0),
         Parent = indicator
     })
-    
+
     local toggled = options.Default or false
-    
+
     local function updateToggle()
         Utility.Tween(indicator, {
-            Position = toggled and UDim2.new(1, -18, 0.5, 0) or UDim2.new(0, 2, 0.5, 0),
-            BackgroundColor3 = toggled and Color3.fromRGB(0, 255, 128) or Lurnai.Themes[Lurnai.Settings.DefaultTheme].Text
+            Position = toggled and UDim2.new(1, -18, 0.5, 0) or UDim2.new(0, 2, 0.5, 0)
         })
-        
-        Utility.Tween(switch, {
-            BackgroundColor3 = toggled and Color3.fromRGB(0, 200, 100) or Lurnai.Themes[Lurnai.Settings.DefaultTheme].Secondary
-        })
-        
         if options.Callback then
             options.Callback(toggled)
         end
     end
-    
+
     switch.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 then
             toggled = not toggled
             updateToggle()
         end
     end)
-    
+
     updateToggle()
     return toggle
 end
 
-function Components.CreateSlider(parent, options)
-    local slider = Utility.Create("Frame", {
-        Name = options.Name or "Slider",
-        Size = UDim2.new(1, -20, 0, 50),
-        Position = options.Position or UDim2.fromOffset(10, 0),
-        BackgroundTransparency = 1,
-        Parent = parent
-    })
-    
-    local label = Utility.Create("TextLabel", {
-        Text = options.Text or "Slider",
-        Size = UDim2.new(1, 0, 0, 20),
-        TextXAlignment = Enum.TextXAlignment.Left,
-        TextColor3 = Lurnai.Themes[Lurnai.Settings.DefaultTheme].Text,
-        BackgroundTransparency = 1,
-        Font = Enum.Font.GothamMedium,
-        TextSize = 14,
-        Parent = slider
-    })
-    
-    local valueLabel = Utility.Create("TextLabel", {
-        Text = tostring(options.Default or options.Min),
-        Size = UDim2.new(0, 50, 0, 20),
-        Position = UDim2.new(1, -50, 0, 0),
-        TextXAlignment = Enum.TextXAlignment.Right,
-        TextColor3 = Lurnai.Themes[Lurnai.Settings.DefaultTheme].SubText,
-        BackgroundTransparency = 1,
-        Font = Enum.Font.GothamMedium,
-        TextSize = 14,
-        Parent = slider
-    })
-    
-    local sliderBar = Utility.Create("Frame", {
-        Size = UDim2.new(1, 0, 0, 4),
-        Position = UDim2.new(0, 0, 0.8, 0),
-        BackgroundColor3 = Lurnai.Themes[Lurnai.Settings.DefaultTheme].Secondary,
-        Parent = slider
-    })
-    
-    local fill = Utility.Create("Frame", {
-        Size = UDim2.fromScale(0.5, 1),
-        BackgroundColor3 = Color3.fromRGB(0, 200, 100),
-        Parent = sliderBar
-    })
-    
-    Utility.Create("UICorner", {
-        CornerRadius = UDim.new(1, 0),
-        Parent = sliderBar
-    })
-    
-    Utility.Create("UICorner", {
-        CornerRadius = UDim.new(1, 0),
-        Parent = fill
-    })
-    
-    local dragging = false
-    local min, max = options.Min or 0, options.Max or 100
-    local value = options.Default or min
-    
-    local function updateSlider(input)
-        local pos = math.clamp((input.Position.X - sliderBar.AbsolutePosition.X) / sliderBar.AbsoluteSize.X, 0, 1)
-        value = math.floor(min + (max - min) * pos)
-        valueLabel.Text = tostring(value)
-        Utility.Tween(fill, {Size = UDim2.fromScale(pos, 1)}, 0.1)
-        
-        if options.Callback then
-            options.Callback(value)
-        end
-    end
-    
-    sliderBar.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            dragging = true
-            updateSlider(input)
-        end
-    end)
-    
-    Services.UserInputService.InputEnded:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            dragging = false
-        end
-    end)
-    
-    Services.UserInputService.InputChanged:Connect(function(input)
-        if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
-            updateSlider(input)
-        end
-    end)
-    
-    return slider
-end
-
--- Final initialization
-Lurnai.Components = Components
+-- Return the library
 return Lurnai
