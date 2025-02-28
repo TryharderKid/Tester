@@ -1,7 +1,7 @@
 loadstring(game:HttpGet("https://raw.githubusercontent.com/TryharderKid/Tester/refs/heads/main/source.luaa"))()
 
-local Window = Fluent:CreateWindow({
-    Title = "Fluent " .. Fluent.Version,
+local Window = Lurnai:CreateWindow({
+    Title = "Lurnai " .. Lurnai.Version,
     SubTitle = "by dawid",
     TabWidth = 160,
     Size = UDim2.fromOffset(580, 460),
@@ -10,16 +10,16 @@ local Window = Fluent:CreateWindow({
     MinimizeKey = Enum.KeyCode.LeftControl -- Used when theres no MinimizeKeybind
 })
 
---Fluent provides Lucide Icons https://lucide.dev/icons/ for the tabs, icons are optional
+--Lurnai provides Lucide Icons https://lucide.dev/icons/ for the tabs, icons are optional
 local Tabs = {
     Main = Window:AddTab({ Title = "Main", Icon = "" }),
     Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
 }
 
-local Options = Fluent.Options
+local Options = Lurnai.Options
 
 do
-    Fluent:Notify({
+    Lurnai:Notify({
         Title = "Notification",
         Content = "This is a notification",
         SubContent = "SubContent", -- Optional
@@ -196,7 +196,7 @@ do
                 print("Keybind is being held down")
             end
 
-            if Fluent.Unloaded then break end
+            if Lurnai.Unloaded then break end
         end
     end)
 
@@ -225,8 +225,8 @@ end
 -- InterfaceManager (Allows you to have a interface managment system)
 
 -- Hand the library over to our managers
-SaveManager:SetLibrary(Fluent)
-InterfaceManager:SetLibrary(Fluent)
+SaveManager:SetLibrary(Lurnai)
+InterfaceManager:SetLibrary(Lurnai)
 
 -- Ignore keys that are used by ThemeManager.
 -- (we dont want configs to save themes, do we?)
@@ -238,8 +238,8 @@ SaveManager:SetIgnoreIndexes({})
 -- use case for doing it this way:
 -- a script hub could have themes in a global folder
 -- and game configs in a separate folder per game
-InterfaceManager:SetFolder("FluentScriptHub")
-SaveManager:SetFolder("FluentScriptHub/specific-game")
+InterfaceManager:SetFolder("LurnaiScriptHub")
+SaveManager:SetFolder("LurnaiScriptHub/specific-game")
 
 InterfaceManager:BuildInterfaceSection(Tabs.Settings)
 SaveManager:BuildConfigSection(Tabs.Settings)
@@ -247,8 +247,8 @@ SaveManager:BuildConfigSection(Tabs.Settings)
 
 Window:SelectTab(1)
 
-Fluent:Notify({
-    Title = "Fluent",
+Lurnai:Notify({
+    Title = "Lurnai",
     Content = "The script has been loaded.",
     Duration = 8
 })
