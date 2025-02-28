@@ -1,14 +1,17 @@
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/TryharderKid/Tester/refs/heads/main/source.luaa"))()
 
-local Window = Library:CreateWindow("My Executor")
+local Window = Library:CreateWindow({
+    Title = "Premium UI",
+    Size = UDim2.new(0, 550, 0, 350)
+})
 
-local MainTab = Window:AddTab("Scripts")
-local SettingsTab = Window:AddTab("Settings")
+local MainTab = Window:AddTab("Main", "rbxassetid://ICON_ID")
+local SettingsTab = Window:AddTab("Settings", "rbxassetid://ICON_ID")
 
-MainTab:AddButton("Execute", function()
-    print("Button clicked!")
+MainTab:AddButton("Premium Feature", function()
+    print("Activated!")
 end)
 
-MainTab:AddToggle("Auto Farm", false, function(state)
-    print("Toggle state:", state)
+MainTab:AddToggle("Enable Premium", false, function(state)
+    print("Premium state:", state)
 end)
