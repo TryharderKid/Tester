@@ -334,5 +334,15 @@ function Lurnai:CreateToggle(parent, options)
     return toggle
 end
 
--- Return the library
-return Lurnai
+-- Initialize the library
+local LurnaiLibrary = {}
+
+-- Add all methods to the library
+LurnaiLibrary.CreateWindow = Lurnai.CreateWindow
+LurnaiLibrary.CreateButton = Lurnai.CreateButton
+LurnaiLibrary.CreateToggle = Lurnai.CreateToggle
+LurnaiLibrary.Themes = Lurnai.Themes
+LurnaiLibrary.Settings = Lurnai.Settings
+
+-- Return the initialized library
+return LurnaiLibrary
