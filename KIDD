@@ -1,0 +1,13 @@
+-- First, make sure you're using https for the raw URL
+local Lurnai = loadstring(game:HttpGet("https://raw.githubusercontent.com/TryharderKid/Tester/main/LurnaiTest"))()
+
+-- Then create your window
+local window = Lurnai:CreateWindow("Cool Title", "Awesome Subtitle")
+
+-- Now you can add components
+local button = Lurnai:CreateButton(window, {
+    Text = "Click Me",
+    Callback = function()
+        print("Button clicked!")
+    end
+})
