@@ -1,7 +1,7 @@
 loadstring(game:HttpGet("https://raw.githubusercontent.com/TryharderKid/Tester/refs/heads/main/source.luaa"))()
 
 local Window = Lurnai:CreateWindow({
-    Title = "Lurnai " .. Lurnai.Version,
+    Title = "Lurnai "
     SubTitle = "by dawid",
     TabWidth = 160,
     Size = UDim2.fromOffset(580, 460),
