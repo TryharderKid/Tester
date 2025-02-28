@@ -1,0 +1,29 @@
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/TryharderKid/Tester/refs/heads/main/LurnaiTest"))()
+
+local window = Lurnai:CreateWindow("My Cool Script", "v1.0.0")
+
+-- Create some elements
+local button = Lurnai.Components.CreateButton(window, {
+    Text = "Click Me!",
+    Callback = function()
+        print("Button clicked!")
+    end
+})
+
+local toggle = Lurnai.Components.CreateToggle(window, {
+    Text = "Toggle Feature",
+    Default = false,
+    Callback = function(value)
+        print("Toggle is now:", value)
+    end
+})
+
+local slider = Lurnai.Components.CreateSlider(window, {
+    Text = "Walkspeed",
+    Min = 16,
+    Max = 100,
+    Default = 16,
+    Callback = function(value)
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = value
+    end
+})
