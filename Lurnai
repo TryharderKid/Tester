@@ -1,62 +1,14 @@
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/lIlIlIlIlIlIlIlIlIllIlIlIlIlIlIlIlIlIl/Tester/refs/heads/main/source.luaa"))()
 
--- Create the window with proper sizing for mobile
-local Window = Library:CreateWindow({
-    Title = "Example UI",
-    Size = UDim2.fromOffset(300, 350), -- Mobile-friendly size
-    MinSize = UDim2.fromOffset(300, 350)
-})
+local Window = Library:CreateWindow("My Executor")
 
--- Create tabs
 local MainTab = Window:CreateTab("Main")
 local SettingsTab = Window:CreateTab("Settings")
 
--- Add elements to MainTab
-MainTab:CreateButton("Click Me", {
-    Callback = function()
-        print("Button Clicked!")
-    end
-})
+MainTab:AddButton("Execute Script", function()
+    print("Button clicked!")
+end)
 
-MainTab:CreateToggle("Toggle Option", {
-    Default = false,
-    Flag = "myToggle",
-    Callback = function(Value)
-        print("Toggle:", Value)
-    end
-})
-
-MainTab:CreateSlider("Speed", {
-    Min = 0,
-    Max = 100,
-    Default = 50,
-    Flag = "speedSlider",
-    Callback = function(Value)
-        print("Speed:", Value)
-    end
-})
-
-MainTab:CreateDropdown("Select Option", {
-    List = {"Option 1", "Option 2", "Option 3"},
-    Default = "Option 1",
-    Flag = "myDropdown",
-    Callback = function(Value)
-        print("Selected:", Value)
-    end
-})
-
-MainTab:CreateColorPicker("UI Color", {
-    Default = Color3.fromRGB(255, 0, 0),
-    Flag = "uiColor",
-    Callback = function(Value)
-        print("Color:", Value)
-    end
-})
-
-MainTab:CreateKeybind("Toggle UI", {
-    Default = Enum.KeyCode.RightControl,
-    Flag = "toggleUI",
-    Callback = function(Value)
-        print("New keybind:", Value)
-    end
-})
+MainTab:AddToggle("Auto Farm", false, function(enabled)
+    print("Toggle is now:", enabled)
+end)
