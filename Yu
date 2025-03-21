@@ -1,0 +1,125 @@
+```lua
+
+-- Obfuscated with LunarObfuscator v1.0.2
+
+local _checksum = "21ef9b4de1cc4454261517524f36dc72"
+local _code = [=[print((function() local s = "\120\141\176\141\151" local k = "7ecdd0ad1398e687" local r = "" for i = 1, #s do local j = i % #k local c = string.byte(s, i) - string.byte(k, j == 0 and #k or j) r = r .. string.char(c) end return r end)())
+]=]
+local function _verifyIntegrity()
+  local _md5 = function(str)
+    local _chars = "0123456789abcdef"
+    local _xor = function(a, b) return a ~= b end
+    -- Simplified MD5 implementation for demonstration
+    local _hash = ""
+    for i = 1, #str do
+      _hash = _hash .. _chars:sub((string.byte(str, i) % 16) + 1, (string.byte(str, i) % 16) + 1)
+    end
+    return _hash:sub(1, 32)
+  end
+
+  if _md5(_code) ~= _checksum then
+    while true do end -- Anti-tamper response
+  end
+end
+_verifyIntegrity()
+
+
+
+local VM = {
+  stack = {},
+  registers = {},
+  constants = {},
+  instructions = {},
+  pc = 1
+}
+
+local function createVM()
+  local vm = {}
+  for k, v in pairs(VM) do
+    vm[k] = type(v) == "table" and {} or v
+  end
+  return vm
+end
+
+local function runVM(vm)
+  while vm.pc <= #vm.instructions do
+    local instruction = vm.instructions[vm.pc]
+    local op = instruction[1]
+
+    if op == "LOAD" then
+      vm.registers[instruction[2]] = vm.constants[instruction[3]]
+    elseif op == "ADD" then
+      vm.registers[instruction[2]] = vm.registers[instruction[3]] + vm.registers[instruction[4]]
+    elseif op == "SUB" then
+      vm.registers[instruction[2]] = vm.registers[instruction[3]] - vm.registers[instruction[4]]
+    elseif op == "MUL" then
+      vm.registers[instruction[2]] = vm.registers[instruction[3]] * vm.registers[instruction[4]]
+    elseif op == "DIV" then
+      vm.registers[instruction[2]] = vm.registers[instruction[3]] / vm.registers[instruction[4]]
+    elseif op == "CALL" then
+      local func = vm.registers[instruction[2]]
+  
+```
+Part 2:
+```lua
+    local args = {}
+      for i = 3, #instruction do
+        table.insert(args, vm.registers[instruction[i]])
+      end
+      vm.registers[0] = func(table.unpack(args))
+    elseif op == "JMP" then
+      vm.pc = instruction[2]
+      goto continue
+    elseif op == "JMPIF" then
+      if vm.registers[instruction[2]] then
+        vm.pc = instruction[3]
+        goto continue
+      end
+    end
+
+    vm.pc = vm.pc + 1
+    ::continue::
+  end
+
+  return vm.registers[0]
+end
+
+
+local constants = {
+  [0] = 3.761689289277914,
+  [1] = 1.0027319908644694,
+  [2] = 80.99655827564203,
+  [3] = 75.14202658016114,
+  [4] = 59.628553299057096,
+  [5] = 75.35916082860179,
+  [6] = 85.43494357650377,
+  [7] = 77.72927119539088,
+  [8] = 99.31506973026913,
+  [9] = 34.30091659772001,
+  [10] = 33.030986669307104,
+  [11] = 94.2838543148365,
+  [12] = 85.22719740810642,
+  [13] = 73.62825381837135,
+  [14] = 7.753282298379971,
+  [15] = 7.095417266539106,
+  [16] = 41.020493625556554,
+  [17] = 53.80446848363061,
+  [18] = 93.95555333335139,
+  [19] = 42.98892129281262,
+  [20] = function(...) return print((function() local s = "\120\141\176\141\151" local k = "7ecdd0ad1398e687" local r = "" for i = 1, #s do local j = i % #k local c = string.byte(s, i) - string.byte(k, j == 0 and #k or j) r = r .. string.char(c) end return r end)())
+ end
+}
+
+local instructions = {
+  {"LOAD", 1, 20},
+  {"CALL", 0, 1},
+}
+
+
+local vm = createVM()
+vm.constants = constants
+vm.instructions = instructions
+return runVM(vm)
+
+
+```
